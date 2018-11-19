@@ -1,0 +1,10 @@
+{
+  "name": "NodeJS-ES6-API",
+  "version": "0.0.1",
+  "description": "Api docs of NodeJS-ES6-API",
+  "title": "NodeJS-ES6-API",
+  "url" : "http://localhost:3000/api",
+  "template": {
+    "forceLanguage": "en"
+  }
+}

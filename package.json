@@ -1,0 +1,161 @@
+{
+  "name": "nodejs-es6-api",
+  "description": "A NodeJS server boilerplate for help you kickstart you futur node project. ES6/ES7 features.",
+  "version": "1.0.3",
+  "author": "Truong Vu <vukhanhtruong@gmail.com>",
+  "engines": {
+    "node": ">= 6.10",
+    "npm": ">= 3.10",
+    "yarn": ">=0.20.3"
+  },
+  "main": "./src/index.js",
+  "keywords": [
+    "express",
+    "es6",
+    "es7",
+    "rest",
+    "api",
+    "boilerplate",
+    "mongodb",
+    "node",
+    "javascript",
+    "pm2",
+    "babel",
+    "nps",
+    "commitizen",
+    "semantic-release",
+    "prettier",
+    "lint-staged",
+    "webpack4"
+  ],
+  "config": {
+    "testPath": "./__tests__"
+  },
+  "license": "MIT",
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn prettier",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit",
+      "pre-push": "yarn test"
+    }
+  },
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "extends": "@istanbuljs/nyc-config-babel",
+    "sourceMap": false,
+    "instrument": false,
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "include": [
+      "src/**"
+    ],
+    "exclude": [
+      "dist/**",
+      "coverage/**",
+      "__tests__/**",
+      "src/config/**",
+      "apidoc/**",
+      "backpack.config.js"
+    ],
+    "cache": true,
+    "all": true,
+    "report-dir": "./coverage"
+  },
+  "scripts": {
+    "build": "nps build",
+    "debug": "nps debug",
+    "dev": "nps dev",
+    "start": "nps",
+    "stop": "nps stop",
+    "test": "nps test",
+    "test:set_path": "npm config set $npm_package_name:testPath",
+    "test:watch": "nps test.watch",
+    "cover": "nps cover",
+    "cover:check": "nps cover.check",
+    "cover:open": "nps cover.open",
+    "cover:report": "nps reportCoverage",
+    "prettier": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
+    "precommit": "nps lintStaged && nps validate",
+    "seeds:user:create": "nps seeds.user.create",
+    "seeds:user:clear": "nps seeds.user.clear",
+    "seeds:user:clear-all": "nps seeds.user.clearAll",
+    "lint": "nps lint",
+    "lint:fix": "nps lint.fix",
+    "doc": "nps doc",
+    "doc:deploy": "nps doc.deploy",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/register": "^7.0.0",
+    "@istanbuljs/nyc-config-babel": "^2.0.0",
+    "ajv": "^6.5.5",
+    "ajv-keywords": "^3.2.0",
+    "all-contributors-cli": "^5.4.1",
+    "apidoc": "^0.17.7",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-istanbul": "^5.1.0",
+    "backpack-core": "^0.8.2",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "faker": "^4.1.0",
+    "husky": "^1.1.4",
+    "lint-staged": "^8.0.5",
+    "mocha": "^5.2.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.6",
+    "nps": "^5.9.3",
+    "nps-utils": "^1.7.0",
+    "nyc": "^13.1.0",
+    "prettier": "^1.15.2",
+    "semantic-release": "^15.12.0",
+    "source-list-map": "2.0.1",
+    "superagent": "^4.0.0",
+    "supertest": "^3.3.0"
+  },
+  "dependencies": {
+    "babel-plugin-webpack-alias": "^2.1.2",
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "compression": "^1.7.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-brute": "^1.0.1",
+    "express-brute-redis": "^0.0.1",
+    "express-validation": "^1.0.2",
+    "express-winston": "^3.0.1",
+    "helmet": "^3.15.0",
+    "http-status": "^1.3.1",
+    "joi": "^14.0.6",
+    "jsonwebtoken": "^8.4.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.3.12",
+    "mongoose-unique-validator": "^2.0.2",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "pm2": "^3.2.2",
+    "pretty-error": "^2.1.1",
+    "raven": "^2.6.4",
+    "slug": "^0.9.2",
+    "winston": "^3.1.0"
+  }
+}

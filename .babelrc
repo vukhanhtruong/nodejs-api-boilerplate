@@ -1,0 +1,25 @@
+{
+  "sourceMaps": "both",
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env", {
+            "useBuiltIns": false
+          }
+        ]
+      ],
+      "plugins": [
+        "istanbul",
+        "@babel/plugin-transform-runtime",
+        [ "babel-plugin-webpack-alias", { "config": "${PWD}/backpack.config.js" } ]
+      ]
+    }
+  },
+  "presets": [
+    "backpack-core/babel"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-do-expressions"
+  ]
+}
