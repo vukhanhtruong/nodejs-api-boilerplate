@@ -5,7 +5,7 @@
 
 ## Installation
 
-1. Clone the project `git clone git@github.com:vukhanhtruong/nodejs-es6-api.git`.
+1. Clone the project `git clone git@github.com:vukhanhtruong/nodejs-api-boilerplate.git`.
 2. Install dependencies `yarn install` or `npm i`
 3. Copy `.env.example` to `.env` file.
 
@@ -147,3 +147,32 @@ gitlab-runner exec docker test
 # to run deployment service
 gitlab-runner exec docker development --docker-privileged
 ```
+
+---
+
+## References
+
+- [Backpack](https://github.com/jaredpalmer/backpack/)
+- [Express Brute](https://www.npmjs.com/package/express-brute)
+- [Helmet](https://github.com/helmetjs/helmet)
+- [Cors](https://github.com/expressjs/cors)
+- [Body-Parser](https://github.com/expressjs/body-parser)
+- [Morgan](https://github.com/expressjs/morgan)
+- [PassportJS](https://github.com/jaredhanson/passport)
+- [Passport-Local](https://github.com/jaredhanson/passport-local)
+- [Passport-JWT](https://github.com/themikenicholson/passport-jwt)
+- [Raven](https://github.com/getsentry/raven-node)
+- [Joi](https://github.com/hapijs/joi)
+- [Http-Status](https://github.com/adaltas/node-http-status)
+- [Lint-Staged](https://github.com/okonet/lint-staged)
+- [Husky](https://github.com/typicode/husky)
+- [Prettier](https://github.com/prettier/prettier)
+- [Eslint Config Prettier](https://github.com/prettier/eslint-config-prettier)
+- [Jest](https://github.com/mochajs/mocha)
+- [Chai](https://github.com/chaijs/chai)
+- [Supertest](https://github.com/visionmedia/supertest)
+- [NPS](https://github.com/kentcdodds/nps)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](http://mongoosejs.com/)
+
+---

@@ -24,14 +24,6 @@ export const corsWhiteList = function(req, callback) {
  *  PAYLOAD WHITELIST
  *
  */
-// for posts route
-const POSTS = {
-  posts: {
-    create: ['title', 'text'],
-    update: ['title', 'text'],
-  },
-};
-
 // for users route
 const USERS = {
   users: {
@@ -39,4 +31,4 @@ const USERS = {
   },
 };
 
-export const WHITELIST = { ...POSTS, ...USERS };
+export const WHITELIST = { ...USERS };

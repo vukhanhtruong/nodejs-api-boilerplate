@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Api docs of YourApp API",
   "title": "YourApp API",
-  "url" : "https://limitless-thicket-10275.herokuapp.com/api",
+  "url" : "https://your-app.herokuapp.com/api",
   "template": {
     "forceLanguage": "en"
   }

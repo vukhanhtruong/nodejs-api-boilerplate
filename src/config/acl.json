@@ -10,7 +10,7 @@
     ]
   },
   {
-    "group": "agency",
+    "group": "staff",
     "permissions": [
       {
         "resource": "users/*",

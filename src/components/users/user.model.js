@@ -4,7 +4,7 @@ import mongoose, { Schema } from 'mongoose';
 import { hashSync, compareSync } from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import uniqueValidator from 'mongoose-beautiful-unique-validation';
-import { IS_AGENCY } from '@/services/acl';
+import { IS_STAFF } from '@/services/acl';
 import constants from '@/config/constants';
 
 const UserSchema = mongoose.Schema(
@@ -50,7 +50,7 @@ const UserSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      default: IS_AGENCY,
+      default: IS_STAFF,
     },
   },
   { timestamps: true },
