@@ -11,6 +11,7 @@ import methodOverride from 'method-override';
 import helmet from 'helmet';
 import cors from 'cors';
 import winstonInstance from './winston';
+import { corsWhiteList } from './whitelist';
 
 const isTest = process.env.NODE_ENV === 'test';
 const isDev = process.env.NODE_ENV === 'development';
@@ -21,7 +22,7 @@ export default app => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(passport.initialize());
   app.use(helmet());
-  app.use(cors());
+  app.use(cors(corsWhiteList));
   app.use(methodOverride());
   if (isDev && !isTest) {
     app.use(morgan('dev'));

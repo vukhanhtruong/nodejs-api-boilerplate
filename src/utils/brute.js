@@ -1,28 +1,30 @@
 /**
  * Limit the allowed login requests of each user
+ * https://github.com/AdamPflug/express-brute
  */
 
 import HTTPStatus from 'http-status';
-import constant from '@/config/constants';
-import ExpressBrute, { MemoryStore } from 'express-brute';
-import RedisStore from 'express-brute-redis';
+import ExpressBrute from 'express-brute';
+import MongooseStore from 'express-brute-mongoose';
+import mongoose from 'mongoose';
 
-let store;
+const BruteForceSchema = mongoose.Schema({
+  _id: String,
+  data: {
+    count: Number,
+    lastRequest: Date,
+    firstRequest: Date,
+  },
+  expires: Date,
+});
+
+export const BruteForceModel = mongoose.model('bruteforce', BruteForceSchema);
+const store = new MongooseStore(BruteForceModel);
 const env = process.env.NODE_ENV;
-
-if (env === 'production') {
-  store = new RedisStore({
-    host: constant.REDIS_HOST,
-    port: constant.REDIS_PORT,
-    password: constant.REDIS_PASSWORD,
-  });
-} else {
-  store = new MemoryStore();
-}
 
 const failCallback = function(req, res, next, nextValidRequestDate) {
   res.status(HTTPStatus.BAD_REQUEST).json({
-    message: "You've made too many failed attempts in a short period of time",
+    message: "You've made too many failed attempts in a short period of time.",
   });
 };
 
@@ -33,7 +35,8 @@ const handleStoreError = function(error) {
   };
 };
 
-const bruteforce = new ExpressBrute(store, {
+let limit = env === 'production' ? 5 : 20;
+export const bruteforce = new ExpressBrute(store, {
   freeRetries: env === 'production' ? 5 : 20,
   minWait: 5 * 60 * 1000, // 5 minutes
   maxWait: 60 * 60 * 1000, // 1 hour,

@@ -2,7 +2,8 @@
 .nyc_output/
 node_modules/
 dist/
-.env
 .coveralls.yml
 coverage
 doc/
+package.lock
+.env

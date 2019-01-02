@@ -1,0 +1,54 @@
+variables:
+  DOCKER_DRIVER: overlay
+  CI_PROJECT_NAME: your-app-backend
+  HEROKU_REGISTRY: registry.heroku.com
+  IMAGE_BUILDING: ${CI_PROJECT_NAME}:development
+  CONTAINER_DEPLOY_IMAGE: ${HEROKU_REGISTRY}/${CI_PROJECT_NAME}/web
+  HEROKU_AUTH_TOKEN: ${HEROKU_TOKEN}
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  image: node:9-alpine
+  cache:
+    paths:
+    - node_modules/
+  script:
+    - npx yarn --pure-lockfile
+    - npx yarn lint
+    - npx yarn test
+  services:
+    - mongo
+  variables:
+    MONGO_URL_TEST: mongodb://mongo:27017/your-app-test
+  only:
+  - development
+
+development:
+  stage: build
+  image: docker:latest
+  script:
+    - docker info
+    - docker login -u _ -p $HEROKU_AUTH_TOKEN $HEROKU_REGISTRY
+    - docker build -f Dockerfile -t $IMAGE_BUILDING .
+    - docker tag $IMAGE_BUILDING $CONTAINER_DEPLOY_IMAGE
+    - docker push $CONTAINER_DEPLOY_IMAGE
+    - docker run --rm -e HEROKU_API_KEY=$HEROKU_TOKEN wingrunr21/alpine-heroku-cli container:release web --app $CI_PROJECT_NAME
+  services:
+  - docker:dind
+  only:
+  - development
+
+build_prod:
+  stage: build
+  image: docker:latest
+  script:
+    - echo $CI_PROJECT_PATH_SLUG
+  services:
+  - docker:dind
+  when: manual
+  only:
+  - master

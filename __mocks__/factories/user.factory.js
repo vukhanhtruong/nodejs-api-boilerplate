@@ -17,9 +17,10 @@ class UserFactory extends BaseFactory {
   generate(attrs) {
     return {
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      username: faker.internet.userName(),
       email: faker.internet.email(),
       password: 'password1',
+      company: `${faker.company.companyName()}`,
+      phone: `${faker.random.number()}`,
       ...attrs,
     };
   }

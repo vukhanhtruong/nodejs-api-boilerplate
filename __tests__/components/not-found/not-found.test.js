@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import server from '@/__mocks__/utils/server.mock';
 
 const ENDPOINT = '/api/wrong/path';
@@ -8,38 +6,46 @@ const ENDPOINT = '/api/wrong/path';
  * @test {not-found.test.js}
  */
 describe(`ALL ${ENDPOINT}`, () => {
-  it('should return Not Found message when POST', done => {
+  test('should return `You are not authorized to access this resource` message when POST', done => {
     server.post(ENDPOINT).end((err, res) => {
       const { body, status } = res;
-      expect(status).to.equal(404);
-      expect(body.message).to.equal('Not Found!');
+      expect(status).toBe(403);
+      expect(body.message).toBe(
+        'You are not authorized to access this resource',
+      );
       done();
     });
   });
 
-  it('should return Not Found message when GET', done => {
+  test('should return `You are not authorized to access this resource` message when GET', done => {
     server.get(ENDPOINT).end((err, res) => {
       const { body, status } = res;
-      expect(status).to.equal(404);
-      expect(body.message).to.equal('Not Found!');
+      expect(status).toBe(403);
+      expect(body.message).toBe(
+        'You are not authorized to access this resource',
+      );
       done();
     });
   });
 
-  it('should return Not Found message when PUT', done => {
+  test('should return `You are not authorized to access this resource` message when PUT', done => {
     server.put(ENDPOINT).end((err, res) => {
       const { body, status } = res;
-      expect(status).to.equal(404);
-      expect(body.message).to.equal('Not Found!');
+      expect(status).toBe(403);
+      expect(body.message).toBe(
+        'You are not authorized to access this resource',
+      );
       done();
     });
   });
 
-  it('should return Not Found message when DELETE', done => {
+  test('should return `You are not authorized to access this resource` message when DELETE', done => {
     server.delete(ENDPOINT).end((err, res) => {
       const { body, status } = res;
-      expect(status).to.equal(404);
-      expect(body.message).to.equal('Not Found!');
+      expect(status).toBe(403);
+      expect(body.message).toBe(
+        'You are not authorized to access this resource',
+      );
       done();
     });
   });

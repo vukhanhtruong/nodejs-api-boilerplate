@@ -1,8 +1,8 @@
 {
   "apps": [
     {
-      "name": "nodejs-es6-api",
-      "script": "./dist",
+      "name": "nodejs-api-boilerplate",
+      "script": "./dist/main.js",
       "merge_logs": true,
       "max_restarts": 20,
       "instances": "max",

@@ -2,7 +2,7 @@
  * Error handler for api routes
  */
 
-import Raven from 'raven';
+import * as Sentry from '@sentry/node';
 import PrettyError from 'pretty-error';
 import HTTPStatus from 'http-status';
 
@@ -11,6 +11,14 @@ import APIError, { RequiredError } from './error';
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
+
+export const SentryLog = () => {
+  Sentry.init({
+    dsn: constants.SENTRY_DSN,
+  });
+
+  return Sentry;
+};
 
 // eslint-disable-next-line no-unused-vars
 export default function logErrorService(err, req, res, next) {
@@ -23,8 +31,7 @@ export default function logErrorService(err, req, res, next) {
   }
 
   if (isProd) {
-    const raven = new Raven.Client(constants.RAVEN_ID);
-    raven.captureException(err);
+    SentryLog().captureException(err);
   }
 
   if (isDev) {

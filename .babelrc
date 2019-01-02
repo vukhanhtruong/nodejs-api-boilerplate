@@ -10,7 +10,6 @@
         ]
       ],
       "plugins": [
-        "istanbul",
         "@babel/plugin-transform-runtime",
         [ "babel-plugin-webpack-alias", { "config": "${PWD}/backpack.config.js" } ]
       ]
@@ -20,6 +19,7 @@
     "backpack-core/babel"
   ],
   "plugins": [
-    "@babel/plugin-proposal-do-expressions"
+    "@babel/plugin-proposal-do-expressions",
+    "@babel/plugin-proposal-class-properties"
   ]
 }

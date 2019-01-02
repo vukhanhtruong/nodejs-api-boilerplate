@@ -7,6 +7,10 @@ const devConfig = {
   REDIS_HOST: process.env.REDIS_HOST_DEV,
   REDIS_PORT: process.env.REDIS_PORT_DEV,
   REDIS_PASSWORD: '',
+  MAIL_API_KEY: process.env.SENDGRID_API_KEY_DEV,
+  FROM_EMAIL: `"${process.env.FROM_EMAIL_NAME_DEV}" <${
+    process.env.FROM_EMAIL_DEV
+  }>`,
 };
 
 const testConfig = {
@@ -15,6 +19,10 @@ const testConfig = {
   REDIS_HOST: process.env.REDIS_HOST_TEST,
   REDIS_PORT: process.env.REDIS_PORT_TEST,
   REDIS_PASSWORD: '',
+  MAIL_API_KEY: process.env.SENDGRID_API_KEY_TEST,
+  FROM_EMAIL: `"${process.env.FROM_EMAIL_NAME_TEST}" <${
+    process.env.FROM_EMAIL_TEST
+  }>`,
 };
 
 const prodConfig = {
@@ -23,11 +31,15 @@ const prodConfig = {
   REDIS_HOST: process.env.REDIS_HOST_PROD,
   REDIS_PORT: process.env.REDIS_PORT_PROD,
   REDIS_PASSWORD: process.env.REDIS_PASSWORD_PROD,
+  MAIL_API_KEY: process.env.SENDGRID_API_KEY_PROD,
+  FROM_EMAIL: `"${process.env.FROM_EMAIL_NAME_PROD}" <${
+    process.env.FROM_EMAIL_PROD
+  }>`,
 };
 
 const defaultConfig = {
   PORT: process.env.PORT || 3000,
-  RAVEN_ID: process.env.RAVEN_ID,
+  SENTRY_DSN: process.env.SENTRY_DSN,
   WHITELIST: { ...WHITELIST },
 };
 

@@ -9,7 +9,7 @@ module.exports = {
     build: {
       description: 'Building in production environment.',
       default: series.nps('clean', 'build.build'),
-      build: `cross-env NODE_ENV=production backpack build`
+      build: `cross-env NODE_ENV=production backpack build`,
     },
     debug: {
       description: 'Debug with VSCode.See VSCode Auto-Attach [here](https://code.visualstudio.com/updates/v1_22#_node-debugging)',
@@ -22,7 +22,7 @@ module.exports = {
     },
     default: {
       description: 'Start project with pm2 on production.',
-      script: `${crossEnv('NODE_ENV=production')} pm2 start processes.json dist/main.js`,
+      script: `${crossEnv('NODE_ENV=production')} pm2 start processes.json --env production --no-daemon`,
     },
     stop: {
       description: 'Stop project with pm2 on production.',
@@ -33,7 +33,7 @@ module.exports = {
       default: 'apidoc -i src',
       deploy: {
         description: 'Deploy the docs on surge.',
-        script: series('nps doc', `surge ./doc -d ${process.env.DOCS_URL}`),
+        script: series('nps doc', `npx surge ./doc -d ${process.env.DOCS_URL}`),
       },
     },
     dev: {
@@ -59,18 +59,13 @@ module.exports = {
       }
     },
     test: {
-      default: `${crossEnv('NODE_ENV=test')} mocha $(find $npm_package_config_testPath -name *.test.js) --timeout 10000 --colors --require @babel/register --exit`,
-      watch: series.nps('test -w')
-    },
-    cover: {
-      description: 'Open the coverage on browser.',
-      default: 'nyc --no-timeouts yarn test',
-      check: `nyc --check-coverage --lines 90 --statements 80 --functions 80 --branches 80 yarn test`,
-      open: 'lite-server --baseDir="coverage/lcov-report"',
-    },
-    reportCoverage: {
-      description: 'Send report to coveralls.io.',
-      default: 'coveralls < ./coverage/lcov.info',
+      default: series.nps('test.test'),
+      test: `${crossEnv('NODE_ENV=test')} jest --detectOpenHandles --runInBand --forceExit`,
+      cover: {
+        default: series.nps('test.test --collectCoverageFrom=src/**.js --coverageDirectory=coverage --coverage'),
+        open: 'npx lite-server --baseDir="coverage/lcov-report"'
+      },
+      watch: series.nps('test.test --watch')
     },
     validate: {
       description: 'Validate code by linting, type-checking.',

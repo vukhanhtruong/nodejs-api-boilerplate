@@ -1,19 +1,18 @@
-import { expect } from 'chai';
-
 import { filteredBody } from '../../src/utils/filteredBody';
+import { WHITELIST } from '../../src/config/whitelist';
 
 describe('#filteredBody()', () => {
-  it('should filter the object given with the list provided', () => {
+  test('It should return users create body', () => {
     const body = {
-      title: 'Hello World',
-      text: 'Hello World',
-      image: 'url',
-      logo: 'hello',
+      name: 'Hello World',
+      email: 'test@gmail.com',
+      phone: 123,
     };
-    const whitelist = ['title', 'text'];
-    expect(filteredBody(body, whitelist).title).to.equal('Hello World');
-    expect(filteredBody(body, whitelist).text).to.equal('Hello World');
-    expect(filteredBody(body, whitelist).image).to.equal(undefined);
-    expect(filteredBody(body, whitelist).logo).to.equal(undefined);
+    expect(filteredBody(body, WHITELIST.users.create).name).toBe('Hello World');
+    expect(filteredBody(body, WHITELIST.users.create).email).toBe(
+      'test@gmail.com',
+    );
+    expect(filteredBody(body, WHITELIST.users.create).phone).toBe(123);
+    expect(filteredBody(body, WHITELIST.users.create).token).toBeUndefined();
   });
 });

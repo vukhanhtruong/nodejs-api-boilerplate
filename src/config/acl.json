@@ -1,0 +1,37 @@
+[
+  {
+    "group": "admin",
+    "permissions": [
+      {
+        "resource": "*",
+        "methods": "*",
+        "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "agency",
+    "permissions": [
+      {
+        "resource": "users/*",
+        "methods": "*",
+        "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "anonymous",
+    "permissions": [
+      {
+        "resource": "users/login",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "users/signup",
+        "methods": ["POST"],
+        "action": "allow"
+      }
+    ]
+  }
+]

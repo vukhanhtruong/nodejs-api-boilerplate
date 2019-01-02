@@ -1,17 +1,3 @@
-# Get Started
-
-- [Installation](https://github.com/vukhanhtruong/nodejs-es6-api#installation)
-- [Running Docker](https://github.com/vukhanhtruong/nodejs-es6-api#running-docker)
-- [Coveralls](https://github.com/vukhanhtruong/nodejs-es6-api#coveralls)
-- [Raven Log](https://github.com/vukhanhtruong/nodejs-es6-api#raven-log)
-- [Api Doc](https://github.com/vukhanhtruong/nodejs-es6-api#api-doc)
-- [Body Whitelist](https://github.com/vukhanhtruong/nodejs-es6-api#body-whitelist)
-- [Pre-Commit Hook](https://github.com/vukhanhtruong/nodejs-es6-api#pre-commit-hook)
-- [Scripts](https://github.com/vukhanhtruong/nodejs-es6-api#scripts)
-- [Validation Middleware](https://github.com/vukhanhtruong/nodejs-es6-api#validation-middleware)
-- [Seeds](https://github.com/vukhanhtruong/nodejs-es6-api#seeds)
-- [References](https://github.com/vukhanhtruong/nodejs-es6-api#references)
-
 ## Prerequisite
 1. NodeJS
 2. Node Package Management (`yarn` or `npm`)
@@ -31,23 +17,9 @@
 
 ---
 
-## Coveralls
-
-Create account at [Coveralls](https://coveralls.io), then put your token to `.coveralls.yml`. Then run the following command to publish your coverage report to coveralls.io.
-
-```sh
-yarn cover:report
-
-# or
-
-npm run cover:report
-```
-
----
-
 ## Raven Log
 
-Create account at [Sentry](https://sentry.io/), then put your url to `.env` file.
+Create account at [Sentry](https://sentry.io/), then put your url to `.env` file at variable `SENTRY_DSN`.
 
 ---
 
@@ -66,23 +38,6 @@ npm run doc
 npm run doc:deploy
 ```
 ---
-
-## Body Whitelist
-
-For security have add a whitelist function for your `req.body` coming from the front end. Take a look of it in the `whitelist.js` file.
-
-```js
-const WHITELIST = {
-  // for users route
-  users: {
-    create: ['email', 'username', 'password'],
-  },
-  ...
-};
-```
-
----
-
 
 ## Pre-Commit Hook
 
@@ -124,32 +79,32 @@ yarn test
 npm run test
 ```
 
+**NOTE:** If you have the issue with ENOSPC, run the below command to avoid:
+
+```sh
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
 #### Test Watch
 
 ```sh
-# Default is __tests__
-yarn test:set_path PATH_TO_YOUR_TEST_DIR
-
 yarn test:watch
 ```
 
 ### COVERAGE
 
 ```sh
-yarn cover
+# run jest coverage
+yarn test:cover
 
-yarn cover:check
-
-# Publish cover to coveralls
-yarn cover:report
+# show html report
+yarn test:cover:open
 
 # or
 
-npm run cover
+npm run test:cover
 
-npm run cover:check
-
-npm run cover:report
+npm run test:cover:open
 ```
 
 ### JSDOC
@@ -170,45 +125,25 @@ npm run doc:deploy
 
 ---
 
-## Seeds
+## Deployment
 
-To create fake users, just running the following command.
+### Heroku Configuration
 
-*To find out more, please take a look to this folder `/scripts/seeds`*
+Generate heroku token. Then add this token to Gitlab CI Variables as HEROKU_TOKEN
 
-- Seeds 10 users `yarn seeds:user:create`
-- Clear users collection `yarn seeds:user:clear`
-- Clear all collection `yarn seeds:user:clear-all`
+```sh
+heroku auth:token
+```
 
----
+### Gitlab CI & CD
+Code will automatically test & deploy to [Heroku](https://devcenter.heroku.com/articles/container-registry-and-runtime#logging-in-to-the-registry) after merging into `development` branch.
 
-## References
+To test gitlabCI on locally, run the following command
 
-- [Backpack](https://github.com/jaredpalmer/backpack/)
-- [Express Brute](https://www.npmjs.com/package/express-brute)
-- [Helmet](https://github.com/helmetjs/helmet)
-- [Cors](https://github.com/expressjs/cors)
-- [Body-Parser](https://github.com/expressjs/body-parser)
-- [Morgan](https://github.com/expressjs/morgan)
-- [PassportJS](https://github.com/jaredhanson/passport)
-- [Passport-Local](https://github.com/jaredhanson/passport-local)
-- [Passport-JWT](https://github.com/themikenicholson/passport-jwt)
-- [Raven](https://github.com/getsentry/raven-node)
-- [Joi](https://github.com/hapijs/joi)
-- [Http-Status](https://github.com/adaltas/node-http-status)
-- [Lint-Staged](https://github.com/okonet/lint-staged)
-- [Husky](https://github.com/typicode/husky)
-- [Prettier](https://github.com/prettier/prettier)
-- [Eslint Config Prettier](https://github.com/prettier/eslint-config-prettier)
-- [CodeClimate](https://codeclimate.com/)
-- [Coveralls](https://github.com/integrations/coveralls)
-- [Travis Ci](https://travis-ci.org/)
-- [Istanbul CLI](https://github.com/istanbuljs/nyc)
-- [Mocha](https://github.com/mochajs/mocha)
-- [Chai](https://github.com/chaijs/chai)
-- [Supertest](https://github.com/visionmedia/supertest)
-- [NPS](https://github.com/kentcdodds/nps)
-- [MongoDB](https://www.mongodb.com/)
-- [Mongoose](http://mongoosejs.com/)
+```sh
+# to run test service
+gitlab-runner exec docker test
 
----
+# to run deployment service
+gitlab-runner exec docker development --docker-privileged
+```

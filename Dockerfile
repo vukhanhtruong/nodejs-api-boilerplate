@@ -1,4 +1,4 @@
-FROM node:7.10.0-alpine
+FROM node:9-alpine
 
 MAINTAINER Truong Vu <vukhanhtruong@gmail.com>
 
@@ -8,14 +8,26 @@ RUN mkdir -p /app
 # set /app directory as default working directory
 WORKDIR /app
 
-ADD package.json yarn.lock /app/
+ADD processes.json \
+    package-scripts.js \
+    package.json \
+    yarn.lock \
+    .babelrc \
+    .eslintrc \
+    .eslintignore \
+    .prettierrc \
+    .env \
+    apidoc.json \
+    backpack.config.js \
+    nacl.json /app/
+COPY ./src /app/src
 
 # --pure-lockfile: Don’t generate a yarn.lock lockfile
 RUN yarn --pure-lockfile
 RUN yarn global add pm2
 
-# copy all file from current dir to /app in container
-COPY . /app/
+# RUN yarn install
+RUN yarn build
 
 # expose port 3000
 EXPOSE 3000

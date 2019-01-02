@@ -3,9 +3,8 @@
 import mongoose, { Schema } from 'mongoose';
 import { hashSync, compareSync } from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
-import uniqueValidator from 'mongoose-unique-validator';
-
-import Post from '@/components/posts/post.model';
+import uniqueValidator from 'mongoose-beautiful-unique-validation';
+import { IS_AGENCY } from '@/services/acl';
 import constants from '@/config/constants';
 
 const UserSchema = mongoose.Schema(
@@ -26,11 +25,17 @@ const UserSchema = mongoose.Schema(
     name: {
       type: String,
       trim: true,
+      required: [true, 'Name is required!'],
     },
-    username: {
+    company: {
       type: String,
       trim: true,
-      unique: true,
+      required: [true, 'Company is required!'],
+    },
+    phone: {
+      type: Number,
+      trim: true,
+      required: [true, 'Phone is required!'],
     },
     password: {
       type: String,
@@ -43,21 +48,15 @@ const UserSchema = mongoose.Schema(
         },
       },
     },
-    favorites: {
-      posts: [
-        {
-          type: mongoose.SchemaTypes.ObjectId,
-          ref: 'Post',
-        },
-      ],
+    role: {
+      type: String,
+      default: IS_AGENCY,
     },
   },
   { timestamps: true },
 );
 
-UserSchema.plugin(uniqueValidator, {
-  message: '{VALUE} already taken!',
-});
+UserSchema.plugin(uniqueValidator);
 
 // Hash the user password on creation
 UserSchema.pre('save', function(next) {
@@ -69,48 +68,6 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods = {
-  /**
-   * Favorites actions
-   *
-   * @public
-   */
-  _favorites: {
-    /**
-     * Favorite a post or unfavorite if already here
-     *
-     * @param {String} postId - _id of the post like
-     * @returns {Promise}
-     */
-    async posts(postId) {
-      try {
-        if (this.favorites.posts.indexOf(postId) >= 0) {
-          this.favorites.posts.remove(postId);
-          await Post.decFavoriteCount(postId);
-        } else {
-          await Post.incFavoriteCount(postId);
-          this.favorites.posts.push(postId);
-        }
-
-        return this.save();
-      } catch (err) {
-        return err;
-      }
-    },
-
-    /**
-     * Check if post is favorite by current user.
-     *
-     * @param {String} postId - _id of the post
-     * @returns {Boolean} isFavorite - post is favorite by current user
-     */
-    isPostIsFavorite(postId) {
-      if (this.favorites.posts.indexOf(postId) >= 0) {
-        return true;
-      }
-
-      return false;
-    },
-  },
   /**
    * Authenticate the user
    *
@@ -142,6 +99,7 @@ UserSchema.methods = {
     return jwt.sign(
       {
         _id: this._id,
+        role: this.role,
       },
       constants.JWT_SECRET,
     );
@@ -156,7 +114,7 @@ UserSchema.methods = {
   toAuthJSON() {
     return {
       _id: this._id,
-      token: `JWT ${this.createToken()}`,
+      token: `Bearer ${this.createToken()}`,
     };
   },
 
@@ -169,13 +127,19 @@ UserSchema.methods = {
   toJSON() {
     return {
       _id: this._id,
-      username: this.username,
+      email: this.email,
+      role: this.role,
     };
   },
 };
 
-let User;
+/**
+ * User schema index fields
+ *
+ */
+UserSchema.index({ email: 1 });
 
+let User;
 try {
   User = mongoose.model('User');
 } catch (e) {

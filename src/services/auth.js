@@ -33,8 +33,8 @@ const localLogin = new LocalStrategy(
  * JWT Strategy Auth
  */
 const jwtOpts = {
-  // Telling Passport to check authorization headers for JWT
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+  // Telling Passport to check authorization headers for Bearer
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   // Telling Passport where to find the secret
   secretOrKey: constants.JWT_SECRET,
 };
@@ -47,7 +47,7 @@ const jwtLogin = new JWTStrategy(jwtOpts, async (payload, done) => {
       return done(null, false);
     }
 
-    return done(null, user);
+    return done(null, user.toJSON());
   } catch (e) {
     return done(e, false);
   }

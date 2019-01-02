@@ -23,12 +23,13 @@ export const validation = {
  * @apiDescription Login a user
  * @apiName loginUser
  * @apiGroup User
+ * @apiPermission anonymous
  *
- * @apiParam (Body) {String} email User email.
- * @apiParam (Body) {String} password User password.
+ * @apiParam (Body) {String} email User's email.
+ * @apiParam (Body) {String} password User's password.
  *
  * @apiSuccess {Number} status Status of the Request.
- * @apiSuccess {String} _id User _id.
+ * @apiSuccess {Object} User Object user
  * @apiSuccess {String} token Authentication token.
  *
  * @apiSuccessExample Success-Response:
@@ -37,7 +38,7 @@ export const validation = {
  *
  * {
  *  _id: '123',
- *  token: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTBhMWI3ODAzMDI3N2NiNjQxM2JhZGUiLCJpYXQiOjE0OTM4MzQ2MTZ9.RSlMF6RRwAALZQRdfKrOZWnuHBk-mQNnRcCLJsc8zio',
+ *  token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTBhMWI3ODAzMDI3N2NiNjQxM2JhZGUiLCJpYXQiOjE0OTM4MzQ2MTZ9.RSlMF6RRwAALZQRdfKrOZWnuHBk-mQNnRcCLJsc8zio',
  * }
  *
  * @apiErrorExample {json} Error
@@ -48,5 +49,5 @@ export const validation = {
  *  }
  */
 export async function login(req, res, next) {
-  return res.status(HTTPStatus.OK).json(req.user.toAuthJSON());
+  res.status(HTTPStatus.OK).json(req.user.toAuthJSON());
 }
